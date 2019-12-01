@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 public class CMS {
 	
+	int numHash;
 	int streamSize;
 	float epsilon;
 	float delta;
@@ -16,13 +17,19 @@ public class CMS {
 		this.epsilon = epsilon;
 		this.delta = delta;
 		this.stream = s;
+		
 		streamSize = approximateStreamSize();
+		numHash = (int) Math.round(Math.log(1/delta));
 		
-		int k = (int) Math.round(Math.log(1/delta));
+		CMS = new int[numHash][getPrime(streamSize)];
+		for (int i = 0; i < numHash; i++) {
+			Arrays.fill(CMS[i], 0);
+		}
 		
-		CMS = processCMS(k);
-		hashFunctions = new HashFunctionRan[k];
-		for (int i = 0; i < k; i++) {
+		processCMS();
+		
+		hashFunctions = new HashFunctionRan[numHash];
+		for (int i = 0; i < numHash; i++) {
 			hashFunctions[i] = new HashFunctionRan(streamSize);
 		}
 	}
@@ -31,22 +38,14 @@ public class CMS {
 		return (int) (2/epsilon);
 	}
 	
-	int[][] processCMS(int k) {
-		int[][] ret = new int[k][getPrime(streamSize)];
-		
-		for (int i = 0; i < k; i++) {
-			Arrays.fill(ret[i], 0);
-		}
-		
+	void processCMS() {		
 		for (int i = 0; i < streamSize; i++) {
 			int x = stream.get(i);
 			int hashValue = hashFunctions[i].hash(x + "");
-			ret[i][hashValue]++;
+			CMS[i][hashValue]++;
 			if (!set.contains(x))
 				set.add(x);
 		}
-		
-		return ret;
 	}
 	
 	int approximateFrequency(int x) {
