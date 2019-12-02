@@ -7,6 +7,7 @@ public class CountSketch {
 	
 	int k;
 	int l;
+	int prime;
 	float epsilon;
 	float delta;
 	ArrayList<Integer> stream;
@@ -22,8 +23,8 @@ public class CountSketch {
 
 		l = (int) (3/Math.pow(epsilon,2.0));
 		k = (int) Math.round(Math.log(1/delta));
-		
-		countSketch = new int[getPrime(l)];
+		prime = getPrime(l);
+		countSketch = new int[prime];
 		Arrays.fill(countSketch, 0);
 		hashFunction = new HashFunctionRan(l);
 		signHash = new SignHash();

@@ -7,6 +7,7 @@ public class CMS {
 	
 	int l;
 	int k;
+	int prime;
 	float epsilon;
 	float delta;
 	ArrayList<Integer> stream;
@@ -21,10 +22,8 @@ public class CMS {
 		
 		l = (int) (2/epsilon);
 		k = (int) Math.round(Math.log(1/delta));
-		
-		System.out.println(k + " : " + l);
-		
-		CMS = new int[k][getPrime(l)];
+		prime = getPrime(l);
+		CMS = new int[k][prime];
 		for (int i = 0; i < k; i++) {
 			Arrays.fill(CMS[i], 0);
 		}
@@ -58,7 +57,6 @@ public class CMS {
         int minValue = Integer.MAX_VALUE;
         for (int i = 0; i < k; i++) {
         	int hashValue = hashFunctions[i].hash(x+"");
-            System.out.println(CMS[i][hashValue]);
             if (CMS[i][hashValue] < minValue) 
             	minValue = CMS[i][hashValue];
         }
@@ -66,10 +64,11 @@ public class CMS {
     }
 	
 	int[] approximateHH(float q, float r) {
+		// assume q >= r + epsilon
 		ArrayList<Integer> list = new ArrayList<>();
 		for (Integer x : set) {
 			int fx = approximateFrequency(x);
-			if (fx >= q*stream.size() && fx > r*stream.size())
+			if (fx >= q*stream.size() && !(fx < r*stream.size()))
 				list.add(x);
 		}
 		int[] ret = new int[list.size()];
