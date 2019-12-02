@@ -19,7 +19,7 @@ public class CountSketchTest {
 		
 		float epsilon = (float) 0.33333;
 		float delta = (float) 0.00005;
-		int l = (int) (2/epsilon);
+		int l = (int) (3/Math.pow(epsilon,2.0));
 		
 		int over = N/l;
 		System.out.println(over);

@@ -20,7 +20,7 @@ public class CountSketch {
 		this.delta = delta;
 		this.stream = s;
 
-		l = (int) (2/epsilon);
+		l = (int) (3/Math.pow(epsilon,2.0));
 		k = (int) Math.round(Math.log(1/delta));
 		
 		countSketch = new int[getPrime(l)];
