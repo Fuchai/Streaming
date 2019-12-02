@@ -3,7 +3,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.jupiter.api.Test;
 
-public class CMSTest {
+public class CountSketchTest {
 	@Test
 	void approximateFrequencies() {
 		ArrayList<Integer> s = new ArrayList<Integer>();
@@ -24,9 +24,9 @@ public class CMSTest {
 		int over = N/l;
 		System.out.println(over);
 		
-		CMS cms = new CMS(epsilon, delta, s);
+		CountSketch countSketch = new CountSketch(epsilon, delta, s);
 		System.out.println("count : " + count);
-		int approx = cms.approximateFrequency(4);
+		int approx = countSketch.approximateFrequency(4);
 		System.out.println(count + " : " + approx);
 	}
 }

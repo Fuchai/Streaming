@@ -25,6 +25,8 @@ public class CountSketch {
 		
 		countSketch = new int[getPrime(l)];
 		Arrays.fill(countSketch, 0);
+		hashFunction = new HashFunctionRan(l);
+		signHash = new SignHash();
 		processCountSketch();
 	}
 	

@@ -22,23 +22,27 @@ public class CMS {
 		l = (int) (2/epsilon);
 		k = (int) Math.round(Math.log(1/delta));
 		
+		System.out.println(k + " : " + l);
+		
 		CMS = new int[k][getPrime(l)];
 		for (int i = 0; i < k; i++) {
 			Arrays.fill(CMS[i], 0);
 		}
 		
-		processCMS();
-		
 		hashFunctions = new HashFunctionRan[k];
 		for (int i = 0; i < k; i++) {
 			hashFunctions[i] = new HashFunctionRan(l);
 		}
+		
+		processCMS();
 	}
 	
 	void processCMS() {		
 		for (Integer x : stream) {
-			int hashValue = hashFunctions[x].hash(x + "");
-			CMS[x][hashValue]++;
+			for (int i = 0; i < k; i++) {
+				int hashValue = hashFunctions[i].hash(x + "");
+				CMS[i][hashValue]++;
+			}
 			if (!set.contains(x))
 				set.add(x);
 		}
@@ -51,13 +55,10 @@ public class CMS {
 	}
 	
 	int getMinValue(int x) {
-        int minValue = CMS[0][0];
-        for (int i = 0; i < CMS.length; i++) {
+        int minValue = Integer.MAX_VALUE;
+        for (int i = 0; i < k; i++) {
         	int hashValue = hashFunctions[i].hash(x+"");
-            
-            if (CMS[i][hashValue] == 0)
-            	continue;
-            	
+            System.out.println(CMS[i][hashValue]);
             if (CMS[i][hashValue] < minValue) 
             	minValue = CMS[i][hashValue];
         }
