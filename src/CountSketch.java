@@ -5,8 +5,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CountSketch {
 	
-	int numHash;
-	int streamSize;
+	int k;
+	int l;
 	float epsilon;
 	float delta;
 	ArrayList<Integer> stream;
@@ -20,21 +20,16 @@ public class CountSketch {
 		this.delta = delta;
 		this.stream = s;
 
-		streamSize = approximateStreamSize();
-		numHash = (int) Math.round(Math.log(1/delta));
+		l = (int) (2/epsilon);
+		k = (int) Math.round(Math.log(1/delta));
 		
-		countSketch = new int[getPrime(streamSize)];
+		countSketch = new int[getPrime(l)];
 		Arrays.fill(countSketch, 0);
 		processCountSketch();
 	}
 	
-	int approximateStreamSize() {
-		return (int) (2/epsilon);
-	}
-	
 	void processCountSketch() {
-		for (int i = 0; i < streamSize; i++) {
-			int x = stream.get(i);
+		for (Integer x : stream) {
 			int h = hashFunction.hash(x + "");
 			int g = signHash.hash(x + "");
 			countSketch[h]+=g;
@@ -51,7 +46,7 @@ public class CountSketch {
 		ArrayList<Integer> list = new ArrayList<>();
 		for (Integer x : set) {
 			int fx = approximateFrequency(x);
-			if (fx >= q*streamSize && fx > r*streamSize)
+			if (fx >= q*stream.size() && fx > r*stream.size())
 				list.add(x);
 		}
 		int[] ret = new int[list.size()];
@@ -119,5 +114,4 @@ class SignHash extends HashFunction {
     		ret = -1;
         return ret;
     }
-	
 }

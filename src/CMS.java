@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CMS {
 	
-	int numHash;
-	int streamSize;
+	int l;
+	int k;
 	float epsilon;
 	float delta;
 	ArrayList<Integer> stream;
@@ -18,31 +19,26 @@ public class CMS {
 		this.delta = delta;
 		this.stream = s;
 		
-		streamSize = approximateStreamSize();
-		numHash = (int) Math.round(Math.log(1/delta));
+		l = (int) (2/epsilon);
+		k = (int) Math.round(Math.log(1/delta));
 		
-		CMS = new int[numHash][getPrime(streamSize)];
-		for (int i = 0; i < numHash; i++) {
+		CMS = new int[k][getPrime(l)];
+		for (int i = 0; i < k; i++) {
 			Arrays.fill(CMS[i], 0);
 		}
 		
 		processCMS();
 		
-		hashFunctions = new HashFunctionRan[numHash];
-		for (int i = 0; i < numHash; i++) {
-			hashFunctions[i] = new HashFunctionRan(streamSize);
+		hashFunctions = new HashFunctionRan[k];
+		for (int i = 0; i < k; i++) {
+			hashFunctions[i] = new HashFunctionRan(l);
 		}
 	}
 	
-	int approximateStreamSize() {
-		return (int) (2/epsilon);
-	}
-	
 	void processCMS() {		
-		for (int i = 0; i < streamSize; i++) {
-			int x = stream.get(i);
-			int hashValue = hashFunctions[i].hash(x + "");
-			CMS[i][hashValue]++;
+		for (Integer x : stream) {
+			int hashValue = hashFunctions[x].hash(x + "");
+			CMS[x][hashValue]++;
 			if (!set.contains(x))
 				set.add(x);
 		}
@@ -72,7 +68,7 @@ public class CMS {
 		ArrayList<Integer> list = new ArrayList<>();
 		for (Integer x : set) {
 			int fx = approximateFrequency(x);
-			if (fx >= q*streamSize && fx > r*streamSize)
+			if (fx >= q*stream.size() && fx > r*stream.size())
 				list.add(x);
 		}
 		int[] ret = new int[list.size()];
