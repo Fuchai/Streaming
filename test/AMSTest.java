@@ -10,8 +10,8 @@ class AMSTest {
         AMS ams=new AMS();
         ArrayList<Integer> input = new ArrayList<>();
         long actualF2=0;
-        float epsilon=0.2f;
-        float delta =0.2f;
+        float epsilon=0.1f;
+        float delta =0.1f;
         ams.report(epsilon, delta);
 
         for (int k = 0; k < 10; k++) {

@@ -9,11 +9,11 @@ class BTest {
 
     @Test
     void receive() {
-        B b = new B(10);
+        B b = new B(100);
         long actualF2=0;
-        for (int i = 0; i < 10000; i++) {
-            int freq = ThreadLocalRandom.current().nextInt(0, 1000);
-            freq=1;
+        for (int i = 0; i < 1000; i++) {
+            int freq = ThreadLocalRandom.current().nextInt(0, 100);
+//            freq=1;
             for (int j = 0; j < freq; j++) {
                 b.receive(i);
 //                for (int k = 0; k < 10; k++) {
