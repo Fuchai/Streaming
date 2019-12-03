@@ -86,7 +86,7 @@ public class CountSketchTest {
 		float epsilon = (float) 0.0186667;
 		float delta = (float) 0.00005;
 		int l = (int) (3/Math.pow(epsilon,2.0));
-		System.out.println("L : " + l); // 8609
+		System.out.println("L : " + l);
 		
 		CountSketch countSketch = new CountSketch(epsilon, delta, s);
 		int approx = countSketch.approximateFrequency(4);
