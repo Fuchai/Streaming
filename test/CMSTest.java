@@ -96,6 +96,7 @@ public class CMSTest {
 	
 	@Test
 	void heavyHitter() {
+		System.out.println("\n" + "heavyHitter");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 1000;
@@ -129,6 +130,7 @@ public class CMSTest {
 	
 	@Test
 	void testProbability() {
+		System.out.println("\n" + "testProbability");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 100;
