@@ -20,8 +20,8 @@ public class CMS {
 		this.delta = delta;
 		this.stream = s;
 		
-		l = (int) (2/epsilon);
-		k = (int) Math.round(Math.log(1/delta));
+		l = (int) (2/epsilon) + 1;
+		k = (int) Math.round(Math.log(1/delta)) + 1;
 		prime = getPrime(l);
 		CMS = new int[k][prime];
 		for (int i = 0; i < k; i++) {

@@ -21,8 +21,8 @@ public class CountSketch {
 		this.delta = delta;
 		this.stream = s;
 
-		l = (int) (3/Math.pow(epsilon,2.0));
-		k = (int) Math.round(Math.log(1/delta));
+		l = (int) (3/Math.pow(epsilon,2.0)) + 1;
+		k = (int) Math.round(Math.log(1/delta)) + 1;
 		prime = getPrime(l);
 		countSketch = new int[prime];
 		Arrays.fill(countSketch, 0);
