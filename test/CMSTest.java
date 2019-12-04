@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.jupiter.api.Test;
@@ -99,8 +100,11 @@ public class CMSTest {
 		
 		int size = 1000;
 		int N = 411;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
 			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
 			s.add(rand);
 		}
 		
@@ -109,12 +113,45 @@ public class CMSTest {
 		
 		CMS cms = new CMS(epsilon, delta, s);
 		int[] hh = cms.approximateHH(2*epsilon, epsilon);
+		System.out.println("numHeavyHitter : " + hh.length);
 		for (int i : s) {
 			if (cms.approximateFrequency(i)>=2*epsilon*size)
 				assertTrue(arrayContains(hh, i));
 			if (cms.approximateFrequency(i)<epsilon*size)
 				assertTrue(!arrayContains(hh, i));
 		}
+		
+		for (int i : hh) {
+			int approx = cms.approximateFrequency(i);
+			System.out.println("count : " + arr[i] + " approx : " + approx);
+		}
+	}
+	
+	@Test
+	void testProbability() {
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		int size = 1000;
+		int N = 411;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
+		for (int i = 0; i < size; i++) {
+			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
+			s.add(rand);
+		}
+		
+		float epsilon = (float) 0.00284;
+		float delta = (float) 0.00005;
+		CMS cms = new CMS(epsilon, delta, s);
+		
+		double count = 0;
+		for (int i = 0; i < N; i++) {
+			if (cms.approximateFrequency(i) - arr[i] >= epsilon*size) {
+				count += 1.0;
+			}
+		}
+		System.out.println("Prob : " + count/N);
 	}
 	
 	boolean arrayContains(int[] arr, int x) {
