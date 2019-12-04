@@ -24,7 +24,7 @@ class AMSDimRedTest {
             Vector vec= new Vector(vecVal);
             float epsilon = 0.05f;
             float delta =0.05f;
-            int k = 4* (int) (Math.ceil(15 / epsilon / epsilon)*Math.log(1/delta));
+            int k = (int) (Math.ceil(15 / epsilon / epsilon)*Math.log(1/delta))/4;
             System.out.println("k: "+k);
             Vector estimated=AMSDimRed.reduceDim(vec, epsilon, delta);
 

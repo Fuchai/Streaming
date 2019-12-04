@@ -131,8 +131,8 @@ public class CMSTest {
 	void testProbability() {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 1000;
-		int N = 411;
+		int size = 100;
+		int N = 123;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -142,7 +142,7 @@ public class CMSTest {
 		}
 		
 		float epsilon = (float) 0.00284;
-		float delta = (float) 0.00005;
+		float delta = (float) 0.02;
 		CMS cms = new CMS(epsilon, delta, s);
 		
 		double count = 0;
