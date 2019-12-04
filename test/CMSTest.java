@@ -131,10 +131,11 @@ public class CMSTest {
 	@Test
 	void testProbability() {
 		System.out.println("\n" + "testProbability");
+		
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 100;
-		int N = 123;
+		int size = 1000;
+		int N = 1000000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -143,14 +144,16 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00284;
-		float delta = (float) 0.02;
+		float epsilon = (float) 0.001;
+		float delta = (float) 0.01;
 		CMS cms = new CMS(epsilon, delta, s);
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {
-			if (cms.approximateFrequency(i) - arr[i] >= epsilon*size) {
-				count += 1.0;
+			double aprox =cms.approximateFrequency(i);
+			double actual=arr[i];
+			if (aprox-actual >= epsilon*size) {
+				count += 1;
 			}
 		}
 		System.out.println("Prob : " + count/N);

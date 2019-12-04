@@ -15,7 +15,7 @@ class AMSDimRedTest {
         for (int j = 0; j < all; j++) {
             int arrLen=200;
             int actualL2=0;
-            int[] vecVal=new int[arrLen];
+            float[] vecVal=new float[arrLen];
             for (int i = 0; i < arrLen; i++) {
                 int num = ThreadLocalRandom.current().nextInt(0, 100);
                 vecVal[i]=num;
@@ -29,8 +29,8 @@ class AMSDimRedTest {
             Vector estimated=AMSDimRed.reduceDim(vec, epsilon, delta);
 
             double estimatedL2=0;
-            for (int i = 0; i <estimated.ds.length; i++) {
-                estimatedL2+=estimated.ds[i]*estimated.ds[i];
+            for (int i = 0; i <estimated.getDim(); i++) {
+                estimatedL2+=estimated.getIthCoor(i)*estimated.getIthCoor(i);
             }
 
             double diffrate=(estimatedL2-actualL2)/actualL2;

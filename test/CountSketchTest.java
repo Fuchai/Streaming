@@ -12,7 +12,7 @@ public class CountSketchTest {
 		System.out.println("\n" + "approximateFrequencyMedian");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int count = 0;
+		int count = 1000;
 		int size = 1000;
 		int N = 411;
 		for (int i = 0; i < size; i++) {
