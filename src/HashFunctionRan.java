@@ -2,8 +2,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class HashFunctionRan extends HashFunction {
     int prime;
-    int a;
-    int b;
+    int c = 0;
+    long a, b, d, e;
 
     /***
      *
@@ -12,8 +12,10 @@ class HashFunctionRan extends HashFunction {
      */
     public HashFunctionRan(int lowerBoundSize) {
         this.prime = getPrime(lowerBoundSize);
-        this.a=ThreadLocalRandom.current().nextInt(0, prime);
-        this.b=ThreadLocalRandom.current().nextInt(0, prime);
+        this.a=ThreadLocalRandom.current().nextLong(0, prime);
+        this.b=ThreadLocalRandom.current().nextLong(0, prime);
+        this.d=ThreadLocalRandom.current().nextLong(0, prime);
+        this.e=ThreadLocalRandom.current().nextLong(0, prime);
     }
 
     public int hash(String s) {
@@ -21,7 +23,12 @@ class HashFunctionRan extends HashFunction {
     }
 
     private int hash(int x) {
-        return mod((a * x) + b, prime);
+//        return mod((a * x) + b, prime);
+    	return mod((a*x*x*x+b*x*x+d*x+e),prime);
+    }
+    
+    void receive(int num) {
+        c += hash(num);
     }
 
     /**

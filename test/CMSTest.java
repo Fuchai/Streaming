@@ -34,9 +34,7 @@ public class CMSTest {
 		int approx = cms.approximateFrequency(4);
 		System.out.println("approx : " + approx);
 	}
-	
-	// for both approximateFrequencies2 and arraySize7000
-	// CMS does not give correct value while CountSketch does
+
 	@Test
 	void approximateFrequencies2() {
 		System.out.println("\n" + "approximateFrequencies2");
@@ -65,34 +63,34 @@ public class CMSTest {
 		System.out.println("approx : " + approx);
 	}
 	
-	@Test
-	void arraySize7000() {
-		System.out.println("\n" + "arraySize7000");
-		// comparing this with arraySize7000 in CountSketchTest
-		ArrayList<Integer> s = new ArrayList<Integer>();
-		
-		int count = 0;
-		int size = 1000;
-		int N = 411;
-		for (int i = 0; i < size; i++) {
-			int rand = ThreadLocalRandom.current().nextInt(0,N);
-			if (rand == 4)
-				count++;
-			s.add(rand);
-		}
-		
-		float epsilon = (float) 0.00284;
-		float delta = (float) 0.00005;
-		CMS cms = new CMS(epsilon, delta, s);
-		int l = cms.prime;
-		int k = cms.k;
-		System.out.println("L : " + l);
-		System.out.println("k*L : " + k*l); // 7070
-		
-		System.out.println("count : " + count);
-		int approx = cms.approximateFrequency(4);
-		System.out.println("approx : " + approx);
-	}
+//	@Test
+//	void arraySize7000() {
+//		System.out.println("\n" + "arraySize7000");
+//		// comparing this with arraySize7000 in CountSketchTest
+//		ArrayList<Integer> s = new ArrayList<Integer>();
+//		
+//		int count = 0;
+//		int size = 1000;
+//		int N = 411;
+//		for (int i = 0; i < size; i++) {
+//			int rand = ThreadLocalRandom.current().nextInt(0,N);
+//			if (rand == 4)
+//				count++;
+//			s.add(rand);
+//		}
+//		
+//		float epsilon = (float) 0.000319;
+//		float delta = (float) 0.00005;
+//		CMS cms = new CMS(epsilon, delta, s);
+//		int l = cms.prime;
+//		int k = cms.k;
+//		System.out.println("L : " + l);
+//		System.out.println("k*L : " + k*l); // 7070
+//		
+//		System.out.println("count : " + count);
+//		int approx = cms.approximateFrequency(4);
+//		System.out.println("approx : " + approx);
+//	}
 	
 	@Test
 	void heavyHitter() {
@@ -100,7 +98,7 @@ public class CMSTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 1000;
-		int N = 411;
+		int N = 10000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -109,8 +107,8 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.013333;
-		float delta = (float) 0.00005;
+		float epsilon = (float) 0.00063667;
+		float delta = (float) 0.01;
 		
 		CMS cms = new CMS(epsilon, delta, s);
 		int[] hh = cms.approximateHH(2*epsilon, epsilon);
@@ -122,15 +120,24 @@ public class CMSTest {
 				assertTrue(!arrayContains(hh, i));
 		}
 		
+		double countAcc = 0;
+		double countErr = 0;
 		for (int i : hh) {
 			int approx = cms.approximateFrequency(i);
-			System.out.println("count : " + arr[i] + " approx : " + approx);
+			if (approx == arr[i])
+				countAcc++;
+			if (arr[i] < epsilon*size)
+				countErr++;
 		}
+		System.out.println("HeavyHitter Err : " + countErr/hh.length);
+		System.out.println("HeavyHitter Accuracy : " + countAcc/hh.length);
 	}
 	
+	// testProbability1 & 2 has same epsilon and delta value as the ones in CountSketchTest
+	// testProbability3 has similar size of array
 	@Test
-	void testProbability() {
-		System.out.println("\n" + "testProbability");
+	void testProbability1() {
+		System.out.println("\n" + "testProbability1");
 		
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
@@ -156,7 +163,73 @@ public class CMSTest {
 				count += 1;
 			}
 		}
-		System.out.println("Prob : " + count/N);
+		System.out.println("Estimate Over Prob : " + count/N);
+	}
+	
+	@Test
+	void testProbability2() {
+		System.out.println("\n" + "testProbability2");
+		
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		int size = 1000;
+		int N = 1000000;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
+		for (int i = 0; i < size; i++) {
+			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
+			s.add(rand);
+		}
+		
+		float epsilon = (float) 0.0001;
+		float delta = (float) 0.01;
+		CMS cms = new CMS(epsilon, delta, s);
+		
+		double count = 0;
+		for (int i = 0; i < N; i++) {
+			double aprox =cms.approximateFrequency(i);
+			double actual=arr[i];
+			if (aprox-actual >= epsilon*size) {
+				count += 1;
+			}
+		}
+		System.out.println("Estimate Over Prob : " + count/N);
+	}
+	
+	@Test
+	void testProbability3() {
+		System.out.println("\n" + "testProbability3");
+		
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		int size = 1000;
+		int N = 411;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
+		for (int i = 0; i < size; i++) {
+			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
+			s.add(rand);
+		}
+		
+		float epsilon = (float) 0.00314;
+		float delta = (float) 0.00005;
+		CMS cms = new CMS(epsilon, delta, s);
+		int l = cms.prime;
+		int k = cms.k;
+		System.out.println("L : " + l);
+		System.out.println("k*L : " + k*l); // 7051
+		
+		double count = 0;
+		for (int i = 0; i < N; i++) {
+			double aprox =cms.approximateFrequency(i);
+			double actual=arr[i];
+			if (aprox-actual >= epsilon*size) {
+				count += 1;
+			}
+		}
+		System.out.println("Estimate Over Prob : " + count/N);
 	}
 	
 	boolean arrayContains(int[] arr, int x) {
