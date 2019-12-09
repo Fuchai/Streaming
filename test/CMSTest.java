@@ -29,7 +29,7 @@ public class CMSTest {
 		System.out.println("L : " + l);
 		System.out.println("k*L : " + k*l);
 		
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		System.out.println("count : " + count);
 		int approx = cms.approximateFrequency(4);
 		System.out.println("approx : " + approx);
@@ -57,7 +57,7 @@ public class CMSTest {
 		System.out.println("L : " + l);
 		System.out.println("k*L : " + k*l);
 		
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		System.out.println("count : " + count);
 		int approx = cms.approximateFrequency(4);
 		System.out.println("approx : " + approx);
@@ -93,12 +93,12 @@ public class CMSTest {
 //	}
 	
 	@Test
-	void heavyHitter() {
-		System.out.println("\n" + "heavyHitter");
+	void heavyHitter1() {
+		System.out.println("\n" + "heavyHitter1");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 100;
-		int N = 123;
+		int size = 1000;
+		int N = 411;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -107,30 +107,78 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00284;
-		float delta = (float) 0.02;
+		float epsilon = (float) 0.00314;
+		float delta = (float) 0.05;
+		float q = epsilon*2;
+		float r = q/2;
 		
-		CMS cms = new CMS(epsilon, delta, s);
-		int[] hh = cms.approximateHH(2*epsilon, epsilon);
+		CMS cms = new CMS(epsilon, delta, s, q, r);
+		int[] hh = cms.approximateHH();
 		System.out.println("numHeavyHitter : " + hh.length);
 		for (int i : s) {
+//			System.out.println(cms.approximateFrequency(i) + " : " + arr[i]);
 			if (cms.approximateFrequency(i)>=2*epsilon*size)
 				assertTrue(arrayContains(hh, i));
 			if (cms.approximateFrequency(i)<epsilon*size)
 				assertTrue(!arrayContains(hh, i));
 		}
 		
-		double count = 0;
-		double countErr = 0;
+		double countH = 0;
+		double countL = 0;
 		for (int i : hh) {
-			int approx = cms.approximateFrequency(i);
-			if (approx - arr[i] >= epsilon*size)
-				count++;
-			if (arr[i] < epsilon*size)
-				countErr++;
+			if (arr[i] >= q*size)
+				countH++;
+			if (arr[i] < r*size)
+				countL++;
 		}
-		System.out.println("HeavyHitter Err : " + countErr/hh.length);
-		System.out.println("HeavyHitter Estimate Over : " + count/hh.length);
+		System.out.println("h : " + countH + "  l : " + countL);
+		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
+		System.out.println("HeavyHitter Err : " + (countL)/hh.length);
+		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
+	}
+	
+	@Test
+	void heavyHitter2() {
+		System.out.println("\n" + "heavyHitter2");
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		int size = 1000;
+		int N = 411;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
+		for (int i = 0; i < size; i++) {
+			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
+			s.add(rand);
+		}
+		
+		float epsilon = (float) 0.00063667;
+		float delta = (float) 0.01;
+		float q = epsilon*2;
+		float r = q/2;
+		
+		CMS cms = new CMS(epsilon, delta, s, q, r);
+		int[] hh = cms.approximateHH();
+		System.out.println("numHeavyHitter : " + hh.length);
+		for (int i : s) {
+//			System.out.println(cms.approximateFrequency(i) + " : " + arr[i]);
+			if (cms.approximateFrequency(i)>=2*epsilon*size)
+				assertTrue(arrayContains(hh, i));
+			if (cms.approximateFrequency(i)<epsilon*size)
+				assertTrue(!arrayContains(hh, i));
+		}
+		
+		double countH = 0;
+		double countL = 0;
+		for (int i : hh) {
+			if (arr[i] >= q*size)
+				countH++;
+			if (arr[i] < r*size)
+				countL++;
+		}
+		System.out.println("h : " + countH + "  l : " + countL);
+		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
+		System.out.println("HeavyHitter Err : " + (countL)/hh.length);
 		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	
@@ -154,7 +202,7 @@ public class CMSTest {
 		
 		float epsilon = (float) 0.001;
 		float delta = (float) 0.01;
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {
@@ -185,7 +233,7 @@ public class CMSTest {
 		
 		float epsilon = (float) 0.0001;
 		float delta = (float) 0.01;
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {
@@ -216,7 +264,7 @@ public class CMSTest {
 		
 		float epsilon = (float) 0.00314;
 		float delta = (float) 0.00005;
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		int l = cms.prime;
 		int k = cms.k;
 		System.out.println("L : " + l);
@@ -251,7 +299,7 @@ public class CMSTest {
 		
 		float epsilon = (float) 0.00063667;
 		float delta = (float) 0.01;
-		CMS cms = new CMS(epsilon, delta, s);
+		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		int l = cms.prime;
 		int k = cms.k;
 		System.out.println("L : " + l);
