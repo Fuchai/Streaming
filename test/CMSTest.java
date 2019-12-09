@@ -97,8 +97,8 @@ public class CMSTest {
 		System.out.println("\n" + "heavyHitter");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 1000;
-		int N = 10000;
+		int size = 100;
+		int N = 123;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -107,8 +107,8 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00063667;
-		float delta = (float) 0.01;
+		float epsilon = (float) 0.00284;
+		float delta = (float) 0.02;
 		
 		CMS cms = new CMS(epsilon, delta, s);
 		int[] hh = cms.approximateHH(2*epsilon, epsilon);
@@ -120,17 +120,18 @@ public class CMSTest {
 				assertTrue(!arrayContains(hh, i));
 		}
 		
-		double countAcc = 0;
+		double count = 0;
 		double countErr = 0;
 		for (int i : hh) {
 			int approx = cms.approximateFrequency(i);
-			if (approx == arr[i])
-				countAcc++;
+			if (approx - arr[i] >= epsilon*size)
+				count++;
 			if (arr[i] < epsilon*size)
 				countErr++;
 		}
 		System.out.println("HeavyHitter Err : " + countErr/hh.length);
-		System.out.println("HeavyHitter Accuracy : " + countAcc/hh.length);
+		System.out.println("HeavyHitter Estimate Over : " + count/hh.length);
+		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	
 	// testProbability1 & 2 has same epsilon and delta value as the ones in CountSketchTest
@@ -220,6 +221,41 @@ public class CMSTest {
 		int k = cms.k;
 		System.out.println("L : " + l);
 		System.out.println("k*L : " + k*l); // 7051
+		
+		double count = 0;
+		for (int i = 0; i < N; i++) {
+			double aprox =cms.approximateFrequency(i);
+			double actual=arr[i];
+			if (aprox-actual >= epsilon*size) {
+				count += 1;
+			}
+		}
+		System.out.println("Estimate Over Prob : " + count/N);
+	}
+	
+	@Test
+	void testProbability4() {
+		System.out.println("\n" + "testProbability4");
+		
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		
+		int size = 1000;
+		int N = 10000;
+		int[] arr = new int[N];
+		Arrays.fill(arr, 0);
+		for (int i = 0; i < size; i++) {
+			int rand = ThreadLocalRandom.current().nextInt(0,N);
+			arr[rand]++;
+			s.add(rand);
+		}
+		
+		float epsilon = (float) 0.00063667;
+		float delta = (float) 0.01;
+		CMS cms = new CMS(epsilon, delta, s);
+		int l = cms.prime;
+		int k = cms.k;
+		System.out.println("L : " + l);
+		System.out.println("k*L : " + k*l);
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {
