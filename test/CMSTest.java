@@ -97,8 +97,8 @@ public class CMSTest {
 		System.out.println("\n" + "heavyHitter1");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 1000;
-		int N = 411;
+		int size = 100000;
+		int N = 1000000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -107,8 +107,8 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00314;
-		float delta = (float) 0.05;
+		float epsilon = (float) 0.0000149;
+		float delta = (float) 0.03;
 		float q = epsilon*2;
 		float r = q/2;
 		
@@ -133,7 +133,7 @@ public class CMSTest {
 		}
 		System.out.println("h : " + countH + "  l : " + countL);
 		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
-		System.out.println("HeavyHitter Err : " + (countL)/hh.length);
+		System.out.println("HeavyHitter Err : " + (countL)/N);
 		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	
@@ -142,8 +142,8 @@ public class CMSTest {
 		System.out.println("\n" + "heavyHitter2");
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 1000;
-		int N = 411;
+		int size = 100000;
+		int N = 1000000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -152,8 +152,8 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00063667;
-		float delta = (float) 0.01;
+		float epsilon = (float) 0.0000149;
+		float delta = (float) 0.5;
 		float q = epsilon*2;
 		float r = q/2;
 		
@@ -178,7 +178,7 @@ public class CMSTest {
 		}
 		System.out.println("h : " + countH + "  l : " + countL);
 		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
-		System.out.println("HeavyHitter Err : " + (countL)/hh.length);
+		System.out.println("HeavyHitter Err : " + (countL)/N);
 		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	
@@ -253,7 +253,7 @@ public class CMSTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 1000;
-		int N = 411;
+		int N = 1000000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -262,13 +262,13 @@ public class CMSTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.00314;
-		float delta = (float) 0.00005;
+		float epsilon = (float) 0.00113;
+		float delta = (float) 0.05;
 		CMS cms = new CMS(epsilon, delta, s, 2*epsilon, epsilon);
 		int l = cms.prime;
 		int k = cms.k;
 		System.out.println("L : " + l);
-		System.out.println("k*L : " + k*l); // 7051
+		System.out.println("k*L : " + k*l); // 7108
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {

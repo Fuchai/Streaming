@@ -194,7 +194,7 @@ public class CountSketchTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 1000;
-		int N = 411;
+		int N = 1000000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {

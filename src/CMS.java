@@ -71,7 +71,7 @@ public class CMS {
 		ArrayList<Integer> list = new ArrayList<>();
 		for (Integer x : set) {
 			int fx = approximateFrequency(x);
-			if (fx >= q*stream.size())
+			if (fx >= q*stream.size() && !(fx < r*stream.size()))
 				list.add(x);
 		}
 		int[] ret = new int[list.size()];
