@@ -10,15 +10,18 @@ public class CMS {
 	int prime;
 	float epsilon;
 	float delta;
+	float q,r;
 	ArrayList<Integer> stream;
 	HashFunction[] hashFunctions;
 	int[][] CMS;
 	HashSet<Integer> set = new HashSet<Integer>();
 	
-	CMS(float epsilon, float delta, ArrayList<Integer> s) {
+	CMS(float epsilon, float delta, ArrayList<Integer> s, float q, float r) {
 		this.epsilon = epsilon;
 		this.delta = delta;
 		this.stream = s;
+		this.q = q;
+		this.r = r;
 		
 		l = (int) (2/epsilon)+1;
 		k = (int) Math.round(Math.log(1/delta))+1;
@@ -63,7 +66,7 @@ public class CMS {
         return minValue ;
     }
 	
-	int[] approximateHH(float q, float r) {
+	int[] approximateHH() {
 		// assume q >= r + epsilon
 		ArrayList<Integer> list = new ArrayList<>();
 		for (Integer x : set) {

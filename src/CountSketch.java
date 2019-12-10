@@ -21,8 +21,8 @@ public class CountSketch {
 		this.delta = delta;
 		this.stream = s;
 
-		l = (int) (3/Math.pow(epsilon,2.0));
-		k = (int) Math.round(Math.log(1/delta));
+		l = (int) (3/Math.pow(epsilon,2.0)) + 1;
+		k = (int) Math.round(Math.log(1/delta)) + 1;
 		prime = getPrime(l);
 		countSketch = new int[prime];
 		Arrays.fill(countSketch, 0);
@@ -45,18 +45,18 @@ public class CountSketch {
 		return countSketch[hashFunction.hash(x + "")]*signHash.hash(x + "");
 	}
 	
-	int[] approximateHH(float q, float r) {
-		ArrayList<Integer> list = new ArrayList<>();
-		for (Integer x : set) {
-			int fx = approximateFrequency(x);
-			if (fx >= q*stream.size() && fx > r*stream.size())
-				list.add(x);
-		}
-		int[] ret = new int[list.size()];
-		for (int i = 0; i < list.size(); i++)
-			ret[i] = list.get(i);
-		return ret;
-	}
+//	int[] approximateHH(float q, float r) {
+//		ArrayList<Integer> list = new ArrayList<>();
+//		for (Integer x : set) {
+//			int fx = approximateFrequency(x);
+//			if (fx >= q*stream.size() && fx > r*stream.size())
+//				list.add(x);
+//		}
+//		int[] ret = new int[list.size()];
+//		for (int i = 0; i < list.size(); i++)
+//			ret[i] = list.get(i);
+//		return ret;
+//	}
 	
 	/**
      * get prime number bigger than n
