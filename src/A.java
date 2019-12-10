@@ -2,17 +2,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class A {
     int c = 0;
-    int offset;
+//    int offset;
     long a, b, d, e;
-    int permSize=157;
+//    int permSize=157;
 //    int permSize=17;
 //    boolean[] lookup;
 //    int lookupSize;
-    Permutation perm;
+//    Permutation perm;
     long prime;
 
     public A() {
-        this.offset = ThreadLocalRandom.current().nextInt(0, 2);
+//        this.offset = ThreadLocalRandom.current().nextInt(0, 2);
         this.a = ThreadLocalRandom.current().nextLong();
         this.b = ThreadLocalRandom.current().nextLong();
         this.d = ThreadLocalRandom.current().nextLong();

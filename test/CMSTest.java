@@ -131,9 +131,25 @@ public class CMSTest {
 			if (arr[i] < r*size)
 				countL++;
 		}
+		double recallFailure=0;
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i]>= q*size){
+				boolean miss=true;
+				for (int j = 0; j < hh.length; j++) {
+					if (hh[j]==i){
+						miss=false;
+						break;
+					}
+				}
+				if (miss){
+					recallFailure++;
+				}
+			}
+		}
 		System.out.println("h : " + countH + "  l : " + countL);
-		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
-		System.out.println("HeavyHitter Err : " + (countL)/N);
+		System.out.println("HeavyHitter Precision: " + (countH)/hh.length);
+		System.out.println("HeavyHitter Err, compare with delta : " + (countL)/N);
+		System.out.println("HeavyHitter Recall Failure, needs to be zero: " + recallFailure);
 		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	
@@ -176,9 +192,25 @@ public class CMSTest {
 			if (arr[i] < r*size)
 				countL++;
 		}
+		double recallFailure=0;
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i]>= q*size){
+				boolean miss=true;
+				for (int j = 0; j < hh.length; j++) {
+					if (hh[j]==i){
+						miss=false;
+						break;
+					}
+				}
+				if (miss){
+					recallFailure++;
+				}
+			}
+		}
 		System.out.println("h : " + countH + "  l : " + countL);
-		System.out.println("HeavyHitter Acc : " + (countH)/hh.length);
-		System.out.println("HeavyHitter Err : " + (countL)/N);
+		System.out.println("HeavyHitter Precision: " + (countH)/hh.length);
+		System.out.println("HeavyHitter Err, compare with delta : " + (countL)/N);
+		System.out.println("HeavyHitter Recall Failure, needs to be zero: " + recallFailure);
 		System.out.println("HeavyHitter ratio : " + (hh.length + 0.0)/N);
 	}
 	

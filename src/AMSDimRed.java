@@ -11,7 +11,6 @@ public class AMSDimRed {
     }
 
     static Vector reduceDim(Vector input, float epsilon, float delta){
-        // TODO what's the correct k and epislon?
         int k =  (int) (Math.ceil(15 / epsilon / epsilon)*Math.log(1/delta)) / 4;
 //        int totalB = 1;
         B b = new B(k);
