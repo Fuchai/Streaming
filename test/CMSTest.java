@@ -62,7 +62,7 @@ public class CMSTest {
 		int approx = cms.approximateFrequency(4);
 		System.out.println("approx : " + approx);
 	}
-	
+
 //	@Test
 //	void arraySize7000() {
 //		System.out.println("\n" + "arraySize7000");
