@@ -49,13 +49,18 @@ public class CountSketch {
 	}
 	
 	double approximateFrequency(int x) {
-		double sum = 0.0;
+		int[] arr = new int[k];
 		for (int i = 0; i < k; i++) {
 			int approx = countSketch[i][hashFunction[i].hash(x + "")]*signHash[i].hash(x + "");
-			sum += approx;
+			arr[i] = approx;
 		}
-		
-		return sum/k;
+		Arrays.sort(arr);
+		double ret = 0;
+		if (k%2 == 1)
+			ret = (arr[k/2] + arr[(k/2) + 1])/2.0;
+		else
+			ret = arr[k/2];
+		return ret;
 	}
 	
 //	int[] approximateHH(float q, float r) {

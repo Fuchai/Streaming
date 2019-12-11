@@ -14,8 +14,8 @@ public class CountSketchTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int count = 0;
-		int size = 1000;
-		int N = 411;
+		int size = 200000;
+		int N = 14110;
 		for (int i = 0; i < size; i++) {
 			int rand = ThreadLocalRandom.current().nextInt(0,N);
 			if (rand == 4)
@@ -41,8 +41,8 @@ public class CountSketchTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int count = 0;
-		int size = 1000;
-		int N = 411;
+		int size = 20000;
+		int N = 14110;
 		for (int i = 0; i < size; i++) {
 			int rand = ThreadLocalRandom.current().nextInt(0,N);
 			if (rand == 4)
@@ -132,7 +132,7 @@ public class CountSketchTest {
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
 		int size = 1000;
-		int N = 1000000;
+		int N = 100000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -141,9 +141,13 @@ public class CountSketchTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.01;
+		float epsilon = (float) 0.013333;
 		float delta = (float) 0.01;
 		CountSketch countSketch = new CountSketch(epsilon, delta, s);
+		int l = countSketch.prime;
+		int k = countSketch.k;
+		System.out.println("L : " + l);
+		System.out.println("k : " + k);
 		
 		double count = 0;
 		for (int i = 0; i < N; i++) {
@@ -162,8 +166,8 @@ public class CountSketchTest {
 		
 		ArrayList<Integer> s = new ArrayList<Integer>();
 		
-		int size = 1000;
-		int N = 1000000;
+		int size = 10000;
+		int N = 100000;
 		int[] arr = new int[N];
 		Arrays.fill(arr, 0);
 		for (int i = 0; i < size; i++) {
@@ -172,8 +176,8 @@ public class CountSketchTest {
 			s.add(rand);
 		}
 		
-		float epsilon = (float) 0.01;
-		float delta = (float) 0.01;
+		float epsilon = (float) 0.5;
+		float delta = (float) 0.1;
 		CountSketch countSketch = new CountSketch(epsilon, delta, s);
 		
 		double count = 0;
