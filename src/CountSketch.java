@@ -11,9 +11,9 @@ public class CountSketch {
 	float epsilon;
 	float delta;
 	ArrayList<Integer> stream;
-	HashFunction hashFunction;
-	SignHash signHash;
-	int[] countSketch;
+	HashFunction[] hashFunction;
+	SignHash[] signHash;
+	int[][] countSketch;
 	HashSet<Integer> set = new HashSet<Integer>();
 	
 	CountSketch(float epsilon, float delta, ArrayList<Integer> s) {
@@ -24,25 +24,38 @@ public class CountSketch {
 		l = (int) (3/Math.pow(epsilon,2.0)) + 1;
 		k = (int) Math.round(Math.log(1/delta)) + 1;
 		prime = getPrime(l);
-		countSketch = new int[prime];
-		Arrays.fill(countSketch, 0);
-		hashFunction = new HashFunctionRan(l);
-		signHash = new SignHash();
+		countSketch = new int[k][prime];
+		for (int i = 0; i < k; i++) 
+			Arrays.fill(countSketch[i], 0);
+		hashFunction = new HashFunctionRan[k];
+		signHash = new SignHash[k];
+		for (int i = 0; i < k; i++) {
+			hashFunction[i] = new HashFunctionRan(l);
+			signHash[i] = new SignHash();
+		}
 		processCountSketch();
 	}
 	
 	void processCountSketch() {
 		for (Integer x : stream) {
-			int h = hashFunction.hash(x + "");
-			int g = signHash.hash(x + "");
-			countSketch[h]+=g;
+			for (int i = 0; i < k; i++) {
+				int h = hashFunction[i].hash(x + "");
+				int g = signHash[i].hash(x + "");
+				countSketch[i][h]+=g;
+			}
 			if (!set.contains(x))
 				set.add(x);
 		}
 	}
 	
-	int approximateFrequency(int x) {
-		return countSketch[hashFunction.hash(x + "")]*signHash.hash(x + "");
+	double approximateFrequency(int x) {
+		double sum = 0.0;
+		for (int i = 0; i < k; i++) {
+			int approx = countSketch[i][hashFunction[i].hash(x + "")]*signHash[i].hash(x + "");
+			sum += approx;
+		}
+		
+		return sum/k;
 	}
 	
 //	int[] approximateHH(float q, float r) {
